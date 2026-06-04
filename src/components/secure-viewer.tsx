@@ -63,11 +63,10 @@ export function SecureViewer({ note, courseName }: SecureViewerProps) {
 
   const renderPdf = useCallback(async (url: string) => {
     const pdfjs = await import("pdfjs-dist");
-    // @ts-expect-error worker url import
     const workerSrc = (await import("pdfjs-dist/build/pdf.worker.min.mjs?url"))
       .default;
     pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
-    const loadingTask = pdfjs.getDocument(url);
+    const loadingTask = pdfjs.getDocument({ url });
     const pdf = await loadingTask.promise;
     const target = contentRef.current;
     if (!target) return;
