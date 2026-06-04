@@ -9,38 +9,114 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StudentIndexRouteImport } from './routes/student/index'
+import { Route as LecturerIndexRouteImport } from './routes/lecturer/index'
+import { Route as StudentBrowseRouteImport } from './routes/student/browse'
+import { Route as LecturerCoursesRouteImport } from './routes/lecturer/courses'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudentIndexRoute = StudentIndexRouteImport.update({
+  id: '/student/',
+  path: '/student/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LecturerIndexRoute = LecturerIndexRouteImport.update({
+  id: '/lecturer/',
+  path: '/lecturer/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentBrowseRoute = StudentBrowseRouteImport.update({
+  id: '/student/browse',
+  path: '/student/browse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LecturerCoursesRoute = LecturerCoursesRouteImport.update({
+  id: '/lecturer/courses',
+  path: '/lecturer/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/lecturer/courses': typeof LecturerCoursesRoute
+  '/student/browse': typeof StudentBrowseRoute
+  '/lecturer/': typeof LecturerIndexRoute
+  '/student/': typeof StudentIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/lecturer/courses': typeof LecturerCoursesRoute
+  '/student/browse': typeof StudentBrowseRoute
+  '/lecturer': typeof LecturerIndexRoute
+  '/student': typeof StudentIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/lecturer/courses': typeof LecturerCoursesRoute
+  '/student/browse': typeof StudentBrowseRoute
+  '/lecturer/': typeof LecturerIndexRoute
+  '/student/': typeof StudentIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/lecturer/courses'
+    | '/student/browse'
+    | '/lecturer/'
+    | '/student/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/lecturer/courses'
+    | '/student/browse'
+    | '/lecturer'
+    | '/student'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/lecturer/courses'
+    | '/student/browse'
+    | '/lecturer/'
+    | '/student/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  LecturerCoursesRoute: typeof LecturerCoursesRoute
+  StudentBrowseRoute: typeof StudentBrowseRoute
+  LecturerIndexRoute: typeof LecturerIndexRoute
+  StudentIndexRoute: typeof StudentIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +124,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/student/': {
+      id: '/student/'
+      path: '/student'
+      fullPath: '/student/'
+      preLoaderRoute: typeof StudentIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lecturer/': {
+      id: '/lecturer/'
+      path: '/lecturer'
+      fullPath: '/lecturer/'
+      preLoaderRoute: typeof LecturerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/student/browse': {
+      id: '/student/browse'
+      path: '/student/browse'
+      fullPath: '/student/browse'
+      preLoaderRoute: typeof StudentBrowseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lecturer/courses': {
+      id: '/lecturer/courses'
+      path: '/lecturer/courses'
+      fullPath: '/lecturer/courses'
+      preLoaderRoute: typeof LecturerCoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  LecturerCoursesRoute: LecturerCoursesRoute,
+  StudentBrowseRoute: StudentBrowseRoute,
+  LecturerIndexRoute: LecturerIndexRoute,
+  StudentIndexRoute: StudentIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
