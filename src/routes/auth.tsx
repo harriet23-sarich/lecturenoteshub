@@ -25,8 +25,6 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Role = "lecturer" | "student";
-
 function AuthPage() {
   const { mode } = Route.useSearch();
   const navigate = useNavigate();
@@ -36,7 +34,6 @@ function AuthPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedRole, setSelectedRole] = useState<Role>("student");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -59,11 +56,11 @@ function AuthPage() {
           password,
           options: {
             emailRedirectTo: window.location.origin,
-            data: { name: name.trim(), role: selectedRole },
+            data: { name: name.trim() },
           },
         });
         if (error) throw error;
-        toast.success("Account created! Welcome aboard.");
+        toast.success("Student account created! Welcome aboard.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
