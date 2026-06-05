@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "A modern university portal where lecturers share course notes and students read them securely in the browser.",
       },
       { name: "author", content: "Lecture Notes Portal" },
-      { property: "og:title", content: "Lecture Notes Portal" },
+      { property: "og:title", content: "Lecture Notes Portal — Secure Course Materials" },
       {
         property: "og:description",
         content: "Secure lecture notes for universities and colleges.",
@@ -94,6 +94,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Lecture Notes Portal — Secure Course Materials" },
+      { name: "description", content: "Lecture Notes Hub is a secure web portal for universities to share lecture notes with students." },
+      { property: "og:description", content: "Lecture Notes Hub is a secure web portal for universities to share lecture notes with students." },
+      { name: "twitter:description", content: "Lecture Notes Hub is a secure web portal for universities to share lecture notes with students." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b6035a5a-fd7d-45b6-b2db-ab3d82eaf406/id-preview-26b2e149--a760b666-61af-46a8-9741-b4c4370a371c.lovable.app-1780639306362.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b6035a5a-fd7d-45b6-b2db-ab3d82eaf406/id-preview-26b2e149--a760b666-61af-46a8-9741-b4c4370a371c.lovable.app-1780639306362.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
