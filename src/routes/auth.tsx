@@ -130,7 +130,7 @@ function AuthPage() {
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             {isRegister
-              ? "Join as a lecturer or student to get started."
+              ? "Create your student account to get started."
               : "Sign in to access your courses and notes."}
           </p>
 
@@ -171,28 +171,6 @@ function AuthPage() {
               />
             </div>
 
-            {isRegister && (
-              <div className="space-y-2">
-                <Label>I am a</Label>
-                <div className="grid grid-cols-2 gap-3">
-                  {(["student", "lecturer"] as Role[]).map((r) => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => setSelectedRole(r)}
-                      className={`rounded-lg border p-3 text-sm font-medium capitalize transition-all ${
-                        selectedRole === r
-                          ? "border-primary bg-primary/10 text-primary ring-1 ring-primary"
-                          : "border-border text-muted-foreground hover:border-primary/40"
-                      }`}
-                    >
-                      {r}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
             <Button type="submit" className="w-full" disabled={submitting}>
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
               {isRegister ? "Create account" : "Sign in"}
@@ -207,6 +185,13 @@ function AuthPage() {
               className="font-semibold text-primary hover:underline"
             >
               {isRegister ? "Sign in" : "Register"}
+            </Link>
+          </p>
+
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Are you a lecturer?{" "}
+            <Link to="/lecturer/register" className="font-semibold text-primary hover:underline">
+              Lecturer registration
             </Link>
           </p>
         </motion.div>
