@@ -46,7 +46,7 @@ function ProfilePage() {
   const handleDelete = async () => {
     setDeleting(true);
     try {
-      await runDelete({ data: {} });
+      await runDelete(undefined as never);
       await supabase.auth.signOut();
       toast.success("Your account has been deleted.");
       navigate({ to: "/" });
