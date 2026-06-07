@@ -90,7 +90,7 @@ function ProfilePage() {
       <Card className="border-destructive/40 p-6">
         <div className="mb-2 flex items-center gap-2 text-destructive">
           <Trash2 className="h-5 w-5" />
-          <h2 className="font-display text-lg font-semibold">Danger zone</h2>
+          <h2 className="font-display text-lg font-semibold">Delete account</h2>
         </div>
         <p className="mb-4 text-sm text-muted-foreground">
           Permanently delete your account and all associated data. This action
