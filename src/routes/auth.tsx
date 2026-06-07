@@ -136,16 +136,22 @@ function AuthPage() {
           </div>
 
           <h2 className="font-display text-2xl font-bold text-foreground">
-            {isRegister ? "Create your account" : "Welcome back"}
+            {forgotMode
+              ? "Reset your password"
+              : isRegister
+                ? "Create your account"
+                : "Welcome back"}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            {isRegister
-              ? "Create your student account to get started."
-              : "Sign in to access your courses and notes."}
+            {forgotMode
+              ? "Enter your email and we will send you a reset link."
+              : isRegister
+                ? "Create your student account to get started."
+                : "Sign in to access your courses and notes."}
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-            {isRegister && (
+            {isRegister && !forgotMode && (
               <div className="space-y-2">
                 <Label htmlFor="name">Full name</Label>
                 <Input
@@ -168,23 +174,48 @@ function AuthPage() {
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                minLength={6}
-                required
-              />
-            </div>
+            {!isRegister && !forgotMode && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <button
+                    type="button"
+                    onClick={() => setForgotMode(true)}
+                    className="text-xs font-medium text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  minLength={6}
+                  required
+                />
+              </div>
+            )}
 
             <Button type="submit" className="w-full" disabled={submitting}>
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-              {isRegister ? "Create account" : "Sign in"}
+              {forgotMode
+                ? "Send reset link"
+                : isRegister
+                  ? "Create account"
+                  : "Sign in"}
             </Button>
+
+            {forgotMode && (
+              <button
+                type="button"
+                onClick={() => setForgotMode(false)}
+                className="w-full text-center text-sm text-muted-foreground hover:text-foreground"
+              >
+                Back to sign in
+              </button>
+            )}
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
