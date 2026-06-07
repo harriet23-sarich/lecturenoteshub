@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   User,
+  ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -141,6 +142,14 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                 <SidebarInner />
               </SheetContent>
             </Sheet>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => window.history.back()}
+              className="gap-1.5"
+            >
+              <ArrowLeft className="h-4 w-4" /> Back
+            </Button>
             <span className="font-display text-sm font-semibold lg:hidden">
               Lecture Notes
             </span>
