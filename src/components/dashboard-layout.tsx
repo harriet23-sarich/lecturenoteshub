@@ -9,6 +9,7 @@ import {
   LogOut,
   Menu,
   X,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -25,12 +26,14 @@ interface NavItem {
 const lecturerNav: NavItem[] = [
   { label: "Dashboard", to: "/lecturer", icon: LayoutDashboard },
   { label: "My Courses", to: "/lecturer/courses", icon: BookOpen },
+  { label: "Profile", to: "/profile", icon: User },
 ];
 
 const studentNav: NavItem[] = [
   { label: "Dashboard", to: "/student", icon: LayoutDashboard },
   { label: "My Courses", to: "/student/courses", icon: Library },
   { label: "Browse Courses", to: "/student/browse", icon: Compass },
+  { label: "Profile", to: "/profile", icon: User },
 ];
 
 export function DashboardLayout({ children }: { children: ReactNode }) {
