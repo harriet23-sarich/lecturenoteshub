@@ -47,6 +47,15 @@ function AuthPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
+      if (forgotMode) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        toast.success("Password reset email sent! Check your inbox.");
+        setForgotMode(false);
+        return;
+      }
       if (isRegister) {
         if (name.trim().length < 2) {
           toast.error("Please enter your full name.");
