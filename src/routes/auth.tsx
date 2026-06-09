@@ -159,7 +159,6 @@ function AuthPage() {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Ada Lovelace"
                   required
                 />
               </div>
@@ -171,7 +170,6 @@ function AuthPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@university.edu"
                 required
               />
             </div>
