@@ -110,7 +110,8 @@ export function SecureViewer({ note, courseName }: SecureViewerProps) {
           const mammoth = await import("mammoth");
           const result = await mammoth.convertToHtml({ arrayBuffer });
           if (!active) return;
-          setDocHtml(result.value);
+          const DOMPurify = (await import("dompurify")).default;
+          setDocHtml(DOMPurify.sanitize(result.value));
         }
       } catch (e) {
         console.error(e);
