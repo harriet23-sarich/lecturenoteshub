@@ -125,7 +125,6 @@ function LecturerRegister() {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Dr. Ada Lovelace"
                 required
               />
             </div>
@@ -136,7 +135,6 @@ function LecturerRegister() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@university.edu"
                 required
               />
             </div>
