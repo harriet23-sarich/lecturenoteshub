@@ -14,8 +14,6 @@ import { toast } from "sonner";
 import {
   getSignedUrl,
   downloadOriginal,
-  triggerBlobDownload,
-  sanitize,
   type NoteRecord,
 } from "@/lib/notes-utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -129,24 +127,7 @@ export function SecureViewer({ note, courseName }: SecureViewerProps) {
     if (!note.allow_download) return;
     setDownloading(true);
     try {
-      if (note.file_type === "pdf") {
-        await downloadOriginal(note);
-      } else {
-        // Generate a PDF from the rendered Word content
-        const { jsPDF } = await import("jspdf");
-        const source = contentRef.current;
-        if (!source) throw new Error("no content");
-        const pdf = new jsPDF({ unit: "pt", format: "a4" });
-        await pdf.html(source, {
-          margin: [36, 36, 36, 36],
-          autoPaging: "text",
-          html2canvas: { scale: 0.7, useCORS: true },
-          width: 523,
-          windowWidth: source.scrollWidth,
-        });
-        const blob = pdf.output("blob");
-        triggerBlobDownload(blob, `${sanitize(note.title)}.pdf`);
-      }
+      await downloadOriginal(note);
       toast.success("Download started");
     } catch (e) {
       console.error(e);
