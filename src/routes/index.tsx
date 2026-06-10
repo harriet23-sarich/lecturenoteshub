@@ -14,7 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/hooks/use-auth";
-import heroImg from "@/assets/hero-campus.jpg";
+import campusAsset from "@/assets/campus-garden.png.asset.json";
+const heroImg = campusAsset.url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
