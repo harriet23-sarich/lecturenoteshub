@@ -114,10 +114,7 @@ function Index() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center gap-2 rounded-full bg-gold/15 px-3 py-1 text-xs font-semibold text-gold-foreground">
-              <ShieldCheck className="h-3.5 w-3.5" /> Built for African universities
-            </span>
-            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.1] text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="font-display text-4xl font-extrabold leading-[1.1] text-foreground sm:text-5xl lg:text-6xl">
               Lecture notes,{" "}
               <span className="text-primary">shared securely.</span>
             </h1>
@@ -128,7 +125,7 @@ function Index() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Button size="lg" asChild>
                 <Link to="/auth" search={{ mode: "register" }}>
-                  Create free account <ArrowRight className="h-4 w-4" />
+                  Create account <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
