@@ -205,9 +205,9 @@ function AuthPage() {
                     className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
                       <Eye className="h-4 w-4" />
+                    ) : (
+                      <EyeOff className="h-4 w-4" />
                     )}
                   </button>
                 </div>
