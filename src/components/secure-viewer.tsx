@@ -14,8 +14,6 @@ import { toast } from "sonner";
 import {
   getSignedUrl,
   downloadOriginal,
-  triggerBlobDownload,
-  sanitize,
   type NoteRecord,
 } from "@/lib/notes-utils";
 import { supabase } from "@/integrations/supabase/client";
