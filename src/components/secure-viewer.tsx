@@ -358,7 +358,7 @@ export function SecureViewer({ note, courseName }: SecureViewerProps) {
                   {Array.from({ length: 8 }).map((_, i) => (
                     <span
                       key={i}
-                      className="-rotate-30 whitespace-nowrap text-[13px] font-semibold text-foreground"
+                      className="rotate-[-30deg] whitespace-nowrap text-[13px] font-semibold text-foreground"
                     >
                       {watermark}
                     </span>
