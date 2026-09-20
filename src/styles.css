@@ -162,3 +162,10 @@
   user-select: none;
   -webkit-touch-callout: none;
 }
+
+/* Protected notes must not be printed to PDF/paper from the browser. */
+@media print {
+  html.print-blocked body {
+    display: none !important;
+  }
+}

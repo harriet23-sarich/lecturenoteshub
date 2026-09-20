@@ -344,9 +344,16 @@ function UploadNote({ courseId, onUploaded }: { courseId: string; onUploaded: ()
         <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Note title (e.g. Week 1 — Intro)" />
         <Input type="file" accept=".docx,.pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
       </div>
-      <div className="mt-3 flex items-center justify-between">
-        <label className="flex items-center gap-2 text-xs text-muted-foreground">
-          Allow students to download <Switch checked={allow} onCheckedChange={setAllow} />
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <label className="flex max-w-md items-start gap-2 text-xs text-muted-foreground">
+          <Switch checked={allow} onCheckedChange={setAllow} />
+          <span>
+            Allow students to download
+            <span className="block text-[11px] leading-snug">
+              OFF: Students can view this note online but the normal download and
+              print controls will not be displayed.
+            </span>
+          </span>
         </label>
         <Button size="sm" onClick={upload} disabled={busy}>
           {busy && <Loader2 className="h-4 w-4 animate-spin" />} Upload
