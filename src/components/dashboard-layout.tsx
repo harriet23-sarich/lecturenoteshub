@@ -1,7 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
-  GraduationCap,
   LayoutDashboard,
   BookOpen,
   Library,
@@ -17,6 +16,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/hooks/use-auth";
+import { BrandLogo } from "@/components/brand-logo";
 
 interface NavItem {
   label: string;
@@ -59,9 +59,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
   const SidebarInner = () => (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
       <div className="flex items-center gap-2 px-5 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-          <GraduationCap className="h-5 w-5" />
-        </div>
+        <BrandLogo />
         <div className="leading-tight">
           <p className="font-display text-sm font-bold">Lecture Notes</p>
           <p className="text-[11px] text-sidebar-foreground/60 capitalize">

@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
-  GraduationCap,
   Upload,
   ShieldCheck,
   FileText,
@@ -14,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/hooks/use-auth";
+import { BrandLogo } from "@/components/brand-logo";
 import campusAsset from "@/assets/campus-garden.png.asset.json";
 const heroImg = campusAsset.url;
 
@@ -85,9 +85,7 @@ function Index() {
       <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <GraduationCap className="h-5 w-5" />
-            </div>
+            <BrandLogo />
             <span className="font-display text-lg font-bold">Lecture Notes</span>
           </div>
           <div className="flex items-center gap-2">
