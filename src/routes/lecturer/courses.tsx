@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  Plus, BookOpen, Trash2, Upload, FileText, Users, Check, X, Loader2, ChevronDown,
+  Plus, BookOpen, Trash2, Upload, FileText, Users, Check, X, Loader2, ChevronDown, Stamp,
 } from "lucide-react";
 import { Protected } from "@/components/protected";
 import { DashboardLayout } from "@/components/dashboard-layout";
@@ -26,6 +27,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { sanitize } from "@/lib/notes-utils";
 import { toast } from "sonner";
+import { watermarkPdf } from "@/lib/pdf-watermark.functions";
 
 export const Route = createFileRoute("/lecturer/courses")({
   component: () => (
@@ -140,7 +142,10 @@ interface Course { id: string; name: string; code: string; description: string }
 
 function CourseCard({ course, onDelete }: { course: Course; onDelete: () => void }) {
   const qc = useQueryClient();
+  const applyWatermark = useServerFn(watermarkPdf);
   const [open, setOpen] = useState(false);
+  const [watermarking, setWatermarking] = useState<string[]>([]);
+  const [progress, setProgress] = useState({ done: 0, total: 0 });
 
   const { data: notes = [] } = useQuery({
     queryKey: ["course-notes", course.id],
@@ -148,7 +153,7 @@ function CourseCard({ course, onDelete }: { course: Course; onDelete: () => void
     queryFn: async () => {
       const { data, error } = await supabase
         .from("notes")
-        .select("id, title, file_type, allow_download, created_at")
+        .select("id, title, file_path, file_type, allow_download, created_at, watermarked_at")
         .eq("course_id", course.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -199,6 +204,26 @@ function CourseCard({ course, onDelete }: { course: Course; onDelete: () => void
 
   const pending = enrollments.filter((e) => e.status === "pending");
 
+  const watermarkNotes = async (noteIds: string[]) => {
+    if (!noteIds.length) return toast.info("All PDFs are already watermarked.");
+    setProgress({ done: 0, total: noteIds.length });
+    setWatermarking(noteIds);
+    let completed = 0;
+    try {
+      for (const noteId of noteIds) {
+        await applyWatermark({ data: { noteId } });
+        completed += 1;
+        setProgress({ done: completed, total: noteIds.length });
+      }
+      toast.success(`${completed} PDF${completed === 1 ? "" : "s"} watermarked`);
+      await qc.invalidateQueries({ queryKey: ["course-notes", course.id] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Watermarking failed");
+    } finally {
+      setWatermarking([]);
+    }
+  };
+
   return (
     <Card className="overflow-hidden">
       <Collapsible open={open} onOpenChange={setOpen}>
@@ -242,7 +267,18 @@ function CourseCard({ course, onDelete }: { course: Course; onDelete: () => void
             <UploadNote courseId={course.id} onUploaded={() => qc.invalidateQueries({ queryKey: ["course-notes", course.id] })} />
 
             <div>
-              <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold"><FileText className="h-4 w-4" /> Notes ({notes.length})</h4>
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                <h4 className="flex items-center gap-2 text-sm font-semibold"><FileText className="h-4 w-4" /> Notes ({notes.length})</h4>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={watermarking.length > 0}
+                  onClick={() => watermarkNotes(notes.filter((n) => n.file_type === "pdf" && !n.watermarked_at).map((n) => n.id))}
+                >
+                  {watermarking.length ? <Loader2 className="h-4 w-4 animate-spin" /> : <Stamp className="h-4 w-4" />}
+                  {watermarking.length ? `${progress.done}/${progress.total}` : "Watermark PDFs"}
+                </Button>
+              </div>
               {notes.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No notes uploaded yet.</p>
               ) : (
@@ -254,6 +290,20 @@ function CourseCard({ course, onDelete }: { course: Course; onDelete: () => void
                         <span className="text-sm font-medium">{n.title}</span>
                       </div>
                       <div className="flex items-center gap-4">
+                        {n.file_type === "pdf" && (
+                          n.watermarked_at ? (
+                            <Badge variant="outline">Watermarked</Badge>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={watermarking.length > 0}
+                              onClick={() => watermarkNotes([n.id])}
+                            >
+                              <Stamp className="h-4 w-4" /> Apply watermark
+                            </Button>
+                          )
+                        )}
                         <label className="flex items-center gap-2 text-xs text-muted-foreground">
                           Allow download
                           <Switch checked={n.allow_download} onCheckedChange={(v) => toggleDownload(n.id, v)} />
@@ -302,6 +352,7 @@ function CourseCard({ course, onDelete }: { course: Course; onDelete: () => void
 }
 
 function UploadNote({ courseId, onUploaded }: { courseId: string; onUploaded: () => void }) {
+  const applyWatermark = useServerFn(watermarkPdf);
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [allow, setAllow] = useState(false);
@@ -327,7 +378,12 @@ function UploadNote({ courseId, onUploaded }: { courseId: string; onUploaded: ()
         course_id: courseId, allow_download: allow,
       });
       if (error) throw error;
-      toast.success("Note uploaded");
+      if (isPdf) {
+        await applyWatermark({ data: { noteId: id } });
+        toast.success("PDF uploaded and watermarked");
+      } else {
+        toast.success("Note uploaded");
+      }
       setTitle(""); setFile(null); setAllow(false);
       onUploaded();
     } catch (e) {

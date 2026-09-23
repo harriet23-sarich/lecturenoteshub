@@ -13,12 +13,18 @@ export const watermarkPdf = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { data: note, error: noteError } = await supabase
       .from("notes")
-      .select("id, file_path, file_type, watermarked_at, course_id, courses!inner(lecturer_id)")
+      .select("id, file_path, file_type, watermarked_at, course_id")
       .eq("id", data.noteId)
       .maybeSingle();
 
     if (noteError) throw new Error(noteError.message);
-    if (!note || note.courses.lecturer_id !== userId) {
+    if (!note) throw new Error("Note not found.");
+    const { data: course } = await supabase
+      .from("courses")
+      .select("lecturer_id")
+      .eq("id", note.course_id)
+      .maybeSingle();
+    if (!course || course.lecturer_id !== userId) {
       throw new Error("Only the course lecturer can watermark this PDF.");
     }
     if (note.file_type !== "pdf") throw new Error("Only PDF notes can be watermarked.");
