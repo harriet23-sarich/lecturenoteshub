@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { GraduationCap, Loader2, ShieldCheck, KeyRound } from "lucide-react";
+import { Loader2, ShieldCheck, KeyRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { registerLecturer } from "@/lib/lecturer.functions";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { BrandLogo } from "@/components/brand-logo";
 
 export const Route = createFileRoute("/lecturer/register")({
   head: () => ({
@@ -74,9 +75,7 @@ function LecturerRegister() {
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="relative hidden flex-col justify-between bg-sidebar p-10 text-sidebar-foreground lg:flex">
         <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <GraduationCap className="h-5 w-5" />
-          </div>
+          <BrandLogo />
           <span className="font-display text-lg font-bold">Lecture Notes Portal</span>
         </Link>
         <div className="space-y-6">
@@ -104,9 +103,7 @@ function LecturerRegister() {
         >
           <div className="mb-8 lg:hidden">
             <Link to="/" className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <GraduationCap className="h-5 w-5" />
-              </div>
+              <BrandLogo />
               <span className="font-display text-lg font-bold">Lecture Notes</span>
             </Link>
           </div>

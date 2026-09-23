@@ -82,6 +82,7 @@ export type Database = {
           file_type: string
           id: string
           title: string
+          watermarked_at: string | null
         }
         Insert: {
           allow_download?: boolean
@@ -91,6 +92,7 @@ export type Database = {
           file_type: string
           id?: string
           title: string
+          watermarked_at?: string | null
         }
         Update: {
           allow_download?: boolean
@@ -100,6 +102,7 @@ export type Database = {
           file_type?: string
           id?: string
           title?: string
+          watermarked_at?: string | null
         }
         Relationships: [
           {
